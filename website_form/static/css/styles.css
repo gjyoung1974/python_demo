@@ -8,11 +8,6 @@ h1 {
   color:#E8E8E8;
 }
 
-img {
-padding-right: 10px;
-padding-left: 10px;
-}
-
 .lead {
   color:#E8E8E8;
 }
@@ -40,10 +35,6 @@ padding-left: 10px;
   margin-top:7%;
 }
 
-.flashes {
-  vertical-align:middle;
-  font-weight:bold;
-}
 
 .Absolute-Center {
   margin: auto;

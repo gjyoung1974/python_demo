@@ -18,7 +18,7 @@ def run_app():
           imm = request.values
           dic = imm.to_dict(flat=True)
           json_data = json.dumps(dic)
-          print (json_data)
+          print ("This is the redacted data from reverse_proxy{}".format(json_data))
           r = requests.post(
           'https://httpbin.verygoodsecurity.io/post',
           data=json_data,
@@ -27,7 +27,7 @@ def run_app():
           verify='website_form/cert.pem'
           )
 
-          print(r.json()['data'])
+          print("This is the revealed data from the forward proxy{}".format(r.json()['data']))
 
           return render_template('success.html')
 
