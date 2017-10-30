@@ -11,7 +11,7 @@
 1. Clone this repo locally:
 
 ```
-$ git clone <repo>
+$ git clone git@github.com:verygoodsecurity/python_demo.git
 
 ```
 
