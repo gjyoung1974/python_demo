@@ -1,12 +1,12 @@
-#Instructions for using this App for Demo purposes.
+# Instructions for using this App for Demo purposes.
 
-##Prerequisites
+## Prerequisites
 - Command Line Access (terminal)
 - SublimeText, Atom or another text editor that can help you show the code quickly.
 - Browser
 
 
-###Open terminal
+### Open terminal
 
 1. Clone this repo locally:
 
@@ -15,7 +15,7 @@ $ git clone <repo>
 
 ```
 
-###Open another terminal tab
+### Open another terminal tab
 2. Download ngrok (we'll need to adjust the rules once you have ngrok running because it generates a new web address every time)
 
 https://ngrok.com/download
@@ -27,7 +27,7 @@ $ ./ngrok start 5000
 
 ```
 
-###Back in repo tab
+### Back in repo tab
 
 3. Navigate to cloned repo directory and enter the following command.
 
