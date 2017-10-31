@@ -17,6 +17,10 @@ h1 {
   padding-top: 25px;
   background-color:#fff;
 }
+.img-fluid{
+  max-width: 100%;
+    height: auto;
+}
 
 .form-horizontal {
   width: 50%;
