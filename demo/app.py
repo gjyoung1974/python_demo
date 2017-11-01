@@ -14,14 +14,14 @@ return render_template('show_redacted.html', data = dic)
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-  if request.method == 'GET':
-      return render_template('index.html')
-  else:
-      imm = request.values
-      dic = imm.to_dict(flat=True)
-      json_data = json.dumps(dic)
-      print(json_data)
-      return redaction(dic)
+    if request.method == 'GET':
+        return render_template('index.html')
+    else:
+        imm = request.values
+        dic = imm.to_dict(flat=True)
+        json_data = json.dumps(dic)
+        print(json_data)
+        return redaction(dic)
 
 @app.route('/show_redacted', methods=['GET'])
 def show_redacted():
