@@ -1,2 +1,2 @@
-web: gunicorn website_forms:app
+web: gunicorn demo:app
 
