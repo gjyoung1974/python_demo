@@ -10,7 +10,7 @@ import json
 app = Flask(__name__)
 
 def redaction(dic):
-return render_template('show_redacted.html', data = dic)
+    return render_template('show_redacted.html', data = dic)
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -43,9 +43,7 @@ def revealed_data():
     values = r.json()['data']
     json_acceptable_string = values.replace("'", "\"")
     vals = json.loads(json_acceptable_string)
-        return render_template('revealed_data.html', data = vals)
-
-return app
+    return render_template('revealed_data.html', data = vals)
 
 if __name__ == "__main__":
   app.run()
