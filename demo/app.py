@@ -43,7 +43,7 @@ def revealed_data():
     values = r.json()['data']
     json_acceptable_string = values.replace("'", "\"")
     vals = json.loads(json_acceptable_string)
-    return render_template('revealed_data.html', data = vals)
+        return render_template('revealed_data.html', data = vals)
 
 return app
 
