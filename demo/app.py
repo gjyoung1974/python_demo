@@ -25,7 +25,7 @@ def index():
 
 @app.route('/show_redacted', methods=['GET'])
 def show_redacted():
-    return render_template('show_redacted.html')
+    render_template('show_redacted.html')
 
 @app.route('/revealed_data', methods=['POST'])
 def revealed_data():
@@ -46,4 +46,4 @@ def revealed_data():
     return render_template('revealed_data.html', data = vals)
 
 if __name__ == "__main__":
-  app.run()
+  app.run(host='0.0.0.0')
