@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="container-full">
+        <div class="row">
+            <div class="col-lg-12 text-center v-center">
+                <h1>Revealed Items</h1>
+                <br />
+                <br />
+                <div class="col-lg-12">
+                  <ul class="list-group">
+                    {% for key, value in data.items() %}
+                      <li>{{key}} : {{value}} </li>
+                    {% endfor %}
+                  </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'index.html' without context %}
+{% endblock %}
