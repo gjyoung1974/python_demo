@@ -38,7 +38,7 @@ def revealed_data():
     data= json_data,
     headers={"Content-type": "application/json"},
     proxies={"https": "https://USuENQQdfR8yhgjdz2x11ydY:9be4303d-f84d-4943-a9c1-164e53c6fbac@tntrsf2iagd.SANDBOX.verygoodproxy.com:8080"},
-    verify='static/cert.pem'
+    verify='demo/static/cert.pem'
     )
     values = r.json()['data']
     json_acceptable_string = values.replace("'", "\"")
