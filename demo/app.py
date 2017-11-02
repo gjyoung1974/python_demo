@@ -16,7 +16,7 @@ def redaction(dic):
 def index():
     if request.method == 'GET':
         return render_template('index.html')
-    else:
+    elif request.method =='POST':
         imm = request.values
         dic = imm.to_dict(flat=True)
         json_data = json.dumps(dic)
