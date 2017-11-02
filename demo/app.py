@@ -34,7 +34,7 @@ def revealed_data():
     json_data = data
     print(json_data)
     r = requests.post(
-    'https://third-party.herokuapp.com/',
+    'https://third-party.herokuapp.com',
     data= json_data,
     headers={"Content-type": "application/json"},
     proxies={"https": "https://USuEEDfMJXe86E5wJo5nvq5H:599db9be-953b-470b-a3e5-655da62c4c0b@tnt539gfbjl.SANDBOX.verygoodproxy.com:8080"},
@@ -43,7 +43,7 @@ def revealed_data():
     # values = r.json()['data']
     # json_acceptable_string = values.replace("'", "\"")
     # vals = json.loads(json_acceptable_string)
-    # return render_template('revealed_data.html', data = vals)
+    return render_template('revealed_data.html')
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0')
