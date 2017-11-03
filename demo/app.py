@@ -33,9 +33,9 @@ def revealed_data():
     data = imm.replace("'", '"')
     json_data = data
     print(json_data)
-    r = requests.post(
+    requests.post(
     'https://third-party.herokuapp.com/post',
-    data= json_data,
+    data=json_data,
     headers={"Content-type": "application/json"},
     proxies={"https": "https://USuEEDfMJXe86E5wJo5nvq5H:599db9be-953b-470b-a3e5-655da62c4c0b@tnt539gfbjl.SANDBOX.verygoodproxy.com:8080"},
     verify='demo/static/cert.pem'
