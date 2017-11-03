@@ -1,4 +1,0 @@
-recursive-include website_forms/templates *
-recursive-include website_forms/static/css *
-recursive-include website_forms/static/js *
-recursive-include website_forms/static/images *
