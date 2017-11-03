@@ -34,7 +34,7 @@ def revealed_data():
     json_data = data
     print(json_data)
     requests.post(
-    'https://third-party.herokuapp.com/post',
+    'https://third-party.herokuapp.com/',
     data=json_data,
     headers={"Content-type": "application/json"},
     proxies={"https": "https://USuENQQdfR8yhgjdz2x11ydY:9be4303d-f84d-4943-a9c1-164e53c6fbac@tntrsf2iagd.SANDBOX.verygoodproxy.com:8080"},
