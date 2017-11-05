@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="row cart-body">
-    <form class="form-horizontal2 boxed" method="post" action="https://tntrsf2iagd.SANDBOX.verygoodproxy.com/">
+    <form class="form-horizontal2 boxed" method="post" action="https://tntliaspogv.SANDBOX.verygoodproxy.com/post">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <!--REVIEW ORDER-->
         <div class="panel panel-info">
@@ -181,14 +181,12 @@ document.getElementById("unsecure").onclick = function() {
   document.getElementById('pan_cvv_label').innerHTML = 'cc_cvv';
 };
 document.getElementById("secure").onclick = function() {
-  document.getElementById('name').name = 'name';
-  document.getElementById('billing_address').name = 'billing_address';
-  document.getElementById('pan_number').name = 'pan_number';
-  document.getElementById('pan_exp').name = 'pan_exp';
-  document.getElementById('pan_cvv').name = 'pan_cvv';
-  document.getElementById('pan_number_label').innerHTML = 'pan_number';
-  document.getElementById('pan_exp_label').innerHTML = 'pan_exp';
-  document.getElementById('pan_cvv_label').innerHTML = 'pan_cvv';
+  document.getElementById('pan_number').name = 'card-number';
+  document.getElementById('pan_exp').name = 'card-expiration-date';
+  document.getElementById('pan_cvv').name = 'card-security-code';
+  document.getElementById('pan_number_label').innerHTML = 'card-number';
+  document.getElementById('pan_exp_label').innerHTML = 'card-expiration-date';
+  document.getElementById('pan_cvv_label').innerHTML = 'card-security-code';
 };
 </script>
 {% endblock %}
