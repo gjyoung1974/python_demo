@@ -45,5 +45,16 @@ def revealed_data():
     # vals = json.loads(json_acceptable_string)
     return render_template('index.html')
 
+@app.route('/payment', methods=["GET", "POST"])
+def payment():
+    if request.method == 'GET':
+        return render_template('payment.html')
+    elif request.method =='POST':
+        imm = request.values
+        dic = imm.to_dict(flat=True)
+        json_data = json.dumps(dic)
+        print(json_data)
+        return redaction(dic)
+
 if __name__ == "__main__":
   app.run(host='0.0.0.0')

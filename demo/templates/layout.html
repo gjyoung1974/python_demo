@@ -14,9 +14,13 @@
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/payment.css') }}" rel="stylesheet">
 </head>
 <div class="row logo">
-    <img class="rounded mx-auto d-block img-fluid" src="static/images/vgs-logo-copy.png" alt="VGS">
+    <img class="rounded mx-auto d-block img-fluid img-logo" src="static/images/vgs-logo-copy.png" alt="VGS" />
+</div>
+<div class="row text-center company-text">
+  <p>Very Good Security</p>
 </div>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
