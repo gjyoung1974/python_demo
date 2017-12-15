@@ -215,7 +215,7 @@ ol, ul {
     background:#fff;
 }
 .btn{
-    border-radius: 1px;
+    border-radius: 5px;
 }
 .btn-sm, .btn-group-sm > .btn{
     border-radius: 1px;
