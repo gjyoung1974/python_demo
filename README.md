@@ -23,13 +23,22 @@ https://ngrok.com/download
 In the directory you downloaded ngrok type:
 
 ```
-$ ./ngrok start 5000
+$ ./ngrok http 5000
 
 ```
 
 ### Back in repo tab
 
 3. Navigate to cloned repo directory and enter the following command.
+
+```
+
+python3.6 -m venv demo
+
+source ./demo/bin/activate
+
+pip install -r requirements.txt
+
 
 ```
 $ make penv
@@ -39,6 +48,7 @@ $ make penv
 ```
 $ make run
 ```
+
 
 *Server is now started*
 
