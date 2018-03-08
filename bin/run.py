@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import argparse
-from website_form import app
-from website_form.app import run_app
+from demo import app
 
 
-app = run_app()
+_app = app.run_app()
 
 if __name__ == "__main__":
-  app.run(host='0.0.0.0')
+  _app.run(host='0.0.0.0')

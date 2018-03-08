@@ -1,13 +1,66 @@
-from flask import Flask, render_template, request, url_for, g, redirect
+from flask import flash, Flask, render_template, request, url_for, g, redirect
+from flask.ext.babel import gettext, ngettext
 import requests
 from werkzeug.datastructures import ImmutableMultiDict
 import json
 
-
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
+from flask_admin.actions import action
+from flask_admin.contrib.sqla import ModelView
 
 
 app = Flask(__name__)
+app.config['DATABASE_FILE'] = 'pydemo.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] =  'sqlite:///' + app.config['DATABASE_FILE']
+app.config['SQLALCHEMY_ECHO'] = True
+
+db = SQLAlchemy(app)
+
+# {"name": "Bob Jones", "billing_address": "1 Dr Carlton B Goodlett Pl, San Francisco, CA 94102", "card-number": "5105105105105100", "card-expiration-date": "12/20", "card-security-code": "123"}
+
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    billing_address = db.Column(db.String(100))
+    card_number = db.Column(db.String(100))
+    card_expiration = db.Column(db.String(100))
+    card_security_code = db.Column(db.String(100))
+
+    @classmethod
+    def from_dict(cls, kwargs):
+        payment_obj = cls()
+        payment_obj.name = kwargs['name']
+        payment_obj.billing_address = kwargs['billing_address']
+        payment_obj.card_number = kwargs['card-number']
+        payment_obj.card_expiration = kwargs['card-expiration-date']
+        payment_obj.card_security_code = kwargs['card-security-code']
+        return payment_obj
+
+    def charge(self):
+        print('i am here')
+        print(self)
+        return True
+
+
+class PaymentAdmin(ModelView):
+
+    @action('charge', 'Charge', 'Are you sure you want to charge this card?')
+    def action_charge(self, ids):
+        try:
+            query = Payment.query.filter(Payment.id.in_(ids))
+            count = 0
+            for payment in query.all():
+                payment.charge()
+                count += 1
+            flash(ngettext('Charge successful.', '%(count)s cards were charged successfully.', count, count=count))
+        except Exception as ex:
+            flash(gettext('Failed to approve users. %(error)s', error=ex))
+
+
+
+admin = Admin(app, name='pydemo', template_mode='bootstrap3')
+admin.add_view(PaymentAdmin(Payment, db.session))
 
 def redaction(dic):
     return render_template('show_redacted.html', data = dic)
@@ -52,9 +105,15 @@ def payment():
     elif request.method =='POST':
         imm = request.values
         dic = imm.to_dict(flat=True)
+        payment = Payment.from_dict(dic)
+        db.session.add(payment)
+        db.session.commit()
         json_data = json.dumps(dic)
         print(json_data)
         return redaction(dic)
 
+
 if __name__ == "__main__":
-  app.run(host='0.0.0.0')
+    db.drop_all()
+    db.create_all()
+    app.run(host='0.0.0.0', debug=True, port=8080)
