@@ -1,5 +1,4 @@
 from flask import flash, Flask, render_template, request, url_for, g, redirect
-from flask.ext.babel import gettext, ngettext
 import requests
 from werkzeug.datastructures import ImmutableMultiDict
 import json
@@ -11,6 +10,7 @@ from flask_admin.contrib.sqla import ModelView
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '123456790'
 app.config['DATABASE_FILE'] = 'pydemo.sqlite'
 app.config['SQLALCHEMY_DATABASE_URI'] =  'sqlite:///' + app.config['DATABASE_FILE']
 app.config['SQLALCHEMY_ECHO'] = True
@@ -50,12 +50,12 @@ class PaymentAdmin(ModelView):
         try:
             query = Payment.query.filter(Payment.id.in_(ids))
             count = 0
-            for payment in query.all():
-                payment.charge()
+            for payment_entry in query.all():
+                payment_entry.charge()
                 count += 1
-            flash(ngettext('Charge successful.', '%(count)s cards were charged successfully.', count, count=count))
+            flash('%s cards were charged successfully.'.format(count))
         except Exception as ex:
-            flash(gettext('Failed to approve users. %(error)s', error=ex))
+            flash('Failed to approve users. %s'.format(ex))
 
 
 
@@ -105,8 +105,8 @@ def payment():
     elif request.method =='POST':
         imm = request.values
         dic = imm.to_dict(flat=True)
-        payment = Payment.from_dict(dic)
-        db.session.add(payment)
+        payment_entry = Payment.from_dict(dic)
+        db.session.add(payment_entry)
         db.session.commit()
         json_data = json.dumps(dic)
         print(json_data)
