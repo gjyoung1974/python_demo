@@ -1,15 +1,20 @@
-from flask import flash, Flask, render_template, request, url_for, g, redirect
-import requests
-from werkzeug.datastructures import ImmutableMultiDict
 import json
+import traceback
 
-from flask_sqlalchemy import SQLAlchemy
+import requests
+import sys
+from flask import flash, Flask, render_template, request
 from flask_admin import Admin
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
+from flask_sqlalchemy import SQLAlchemy
 
+import processor
 
 app = Flask(__name__)
+app.register_blueprint(processor.processor)
+app = processor.on_register(app)
+
 app.config['SECRET_KEY'] = '123456790'
 app.config['DATABASE_FILE'] = 'pydemo.sqlite'
 app.config['SQLALCHEMY_DATABASE_URI'] =  'sqlite:///' + app.config['DATABASE_FILE']
@@ -38,8 +43,8 @@ class Payment(db.Model):
         return payment_obj
 
     def charge(self):
-        print('i am here')
-        print(self)
+        response = processor.client.charge({'card': self.card_number})
+        print(response.json())
         return True
 
 
@@ -53,9 +58,11 @@ class PaymentAdmin(ModelView):
             for payment_entry in query.all():
                 payment_entry.charge()
                 count += 1
-            flash('%s cards were charged successfully.'.format(count))
+            flash('{count} cards were charged successfully.'.format(count=count))
         except Exception as ex:
-            flash('Failed to approve users. %s'.format(ex))
+            print(''.join(traceback.format_exception(None,ex, ex.__traceback__)),
+                  file=sys.stderr, flush=True)
+            flash('Failed to approve users. {error}'.format(error=ex), category='error')
 
 
 
@@ -114,6 +121,6 @@ def payment():
 
 
 if __name__ == "__main__":
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
-    app.run(host='0.0.0.0', debug=True, port=8080)
+    app.run(host='0.0.0.0', debug=True, port=8080, threaded=True)
