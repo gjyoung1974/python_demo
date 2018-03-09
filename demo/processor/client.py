@@ -1,9 +1,13 @@
-import requests
+from flask import current_app
 
 from .helpers import dumps
 
 
+def _client():
+    # or this could be requests
+    return current_app.test_client()
+
 
 def charge(payload):
-    r = requests.post('http://localhost:8080/charge', data=dumps(payload))
+    r = _client().post('/charge', data=dumps(payload))
     return r

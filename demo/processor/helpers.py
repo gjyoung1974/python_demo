@@ -18,7 +18,7 @@ from werkzeug.http import parse_authorization_header
 from werkzeug.datastructures import WWWAuthenticate
 from requests.structures import CaseInsensitiveDict
 from flask import request, make_response, jsonify as flask_jsonify
-from flask.json import JSONEncoder as FlaskJSONEncoder, dumps
+import flask.json
 
 
 ASCII_ART = """
@@ -80,7 +80,12 @@ ANGRY_ASCII ="""
      YOU SHOULDN'T BE HERE
 """
 
-class JSONEncoder(FlaskJSONEncoder):
+dumps = flask.json.dumps
+
+loads = flask.json.loads
+
+
+class JSONEncoder(flask.json.JSONEncoder):
     def default(self, o):
         if isinstance(o, CaseInsensitiveDict):
             return dict(o)
