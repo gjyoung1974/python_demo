@@ -1,8 +1,11 @@
+import argparse
 import json
-import traceback
-
-import requests
 import sys
+import traceback
+from urllib.parse import urlunsplit, urlparse
+
+import os
+import requests
 from flask import flash, Flask, render_template, request
 from flask_admin import Admin
 from flask_admin.actions import action
@@ -10,10 +13,14 @@ from flask_admin.contrib.sqla import ModelView
 from flask_sqlalchemy import SQLAlchemy
 
 import processor
+from flask_admin_material import setup_templates as setup_admin_material_theme
+
 
 app = Flask(__name__)
 app.register_blueprint(processor.processor)
+app = setup_admin_material_theme(app)
 app = processor.on_register(app)
+
 
 app.config['SECRET_KEY'] = '123456790'
 app.config['DATABASE_FILE'] = 'pydemo.sqlite'
@@ -22,7 +29,6 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
-# {"name": "Bob Jones", "billing_address": "1 Dr Carlton B Goodlett Pl, San Francisco, CA 94102", "card-number": "5105105105105100", "card-expiration-date": "12/20", "card-security-code": "123"}
 
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,6 +50,7 @@ class Payment(db.Model):
 
     def charge(self):
         response = processor.client.charge({'card': self.card_number})
+        response.raise_for_status()
         print(response.json())
         return True
 
@@ -63,7 +70,6 @@ class PaymentAdmin(ModelView):
             print(''.join(traceback.format_exception(None,ex, ex.__traceback__)),
                   file=sys.stderr, flush=True)
             flash('Failed to approve users. {error}'.format(error=ex), category='error')
-
 
 
 admin = Admin(app, name='pydemo', template_mode='bootstrap3')
@@ -120,7 +126,74 @@ def payment():
         return redaction(dic)
 
 
-if __name__ == "__main__":
-    # db.drop_all()
+def create_parser():
+    parser = argparse.ArgumentParser(description="VGS Demo", prog="pydemo")
+
+    parser.add_argument('--init-db', dest='init_db', action='store_true',
+                        help="re-initializes the database")
+
+    parser.add_argument('--host', dest='server_host', action='store',
+                        default='0.0.0.0', help="sets the server host")
+
+    parser.add_argument('--port', dest='server_port', action='store', type=int,
+                        default=8080, help="sets the server port")
+
+    parser.add_argument('--debug', dest='server_debug', action='store_true',
+                        default=False, help="turns on debug mode")
+
+    parser.add_argument('--processor-root-uri', dest='processor_root_uri',
+                        help="sets the processor uri (http(s?)://{HOST}(:{PORT})?")
+
+    parser.add_argument('--vgs-proxy-uri', dest='vgs_proxy_uri',
+                        help="configures the VGS proxy uri")
+
+    return parser
+
+
+def start_server(parsed_args):
+    app.run(host=parsed_args.server_host,
+            debug=parsed_args.server_debug,
+            port=parsed_args.server_port,
+            threaded=True)
+
+
+def init_db(drop=False):
+    if drop:
+        db.drop_all()
     db.create_all()
-    app.run(host='0.0.0.0', debug=True, port=8080, threaded=True)
+
+
+def main(pa):
+    if pa.init_db:
+        init_db(drop=True)
+
+    pr = ('http','{0}:{1}'.format(pa.server_host, pa.server_port), '',
+          None, None)
+
+    app.config['VGS_PROCESSOR_ROOT_URL'] = urlunsplit(pr)
+    if pa.processor_root_uri:
+        app.config['VGS_PROCESSOR_ROOT_URL'] = pa.processor_root_uri
+
+    proxy_uri = None
+    for k in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY'):
+        if k in os.environ:
+            proxy_uri = os.environ[k]
+            break
+    else:
+        if pa.vgs_proxy_uri:
+            proxy_uri = pa.vgs_proxy_uri
+
+    if proxy_uri:
+        parsed_uri = urlparse(proxy_uri)
+        app.config['VGS_PROXY_USERNAME'] = parsed_uri.username
+        app.config['VGS_PROXY_PASSWORD'] = parsed_uri.password
+        app.config['VGS_PROXY_PORT'] = parsed_uri.port
+        app.config['VGS_PROXY_URL'] = parsed_uri.hostname
+
+    start_server(pa)
+
+
+if __name__ == "__main__":
+    cli_parser = create_parser()
+    main(cli_parser.parse_args())
+
