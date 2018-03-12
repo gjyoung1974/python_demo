@@ -13,9 +13,10 @@ setup(
     include_package_data=True,
     packages=['.'],
     install_requires=[
-        "gunicorn",
-        "requests",
-        "flask_sqlalchemy",
-        "flask-admin",
+        "gunicorn==19.7.1",
+        "requests==2.18.4",
+        "Flask==0.12.2",
+        "Flask-Admin==1.5.1",
+        "Flask-SQLAlchemy==2.3.2",
    ],
 )
