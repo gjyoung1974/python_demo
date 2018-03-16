@@ -78,6 +78,8 @@ def init_app(app):
     processor_admin = Admin(app,
                             url='/processor_admin',
                             endpoint='/processor_admin',
-                            name='Processor Portal')
+                            name='Processor Portal',
+                            base_template='processor/admin/base.html',
+                            template_mode='bootstrap3')
     processor_admin.add_view(ChargeView(Charge, db.session, endpoint='charges'))
     return app

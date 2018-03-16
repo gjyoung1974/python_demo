@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 
 from flask import render_template, request, Blueprint, flash
-from flask_admin import Admin
+from flask_admin import Admin, expose
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 
@@ -64,7 +64,13 @@ class Payment(db.Model):
         return True
 
 
-class PaymentAdmin(ModelView):
+class CustomView(ModelView):
+    list_template = 'merchant/list.html'
+    create_template = 'merchant/create.html'
+    edit_template = 'merchant/edit.html'
+
+
+class PaymentAdmin(CustomView):
 
     @action('charge', 'Charge', 'Are you sure you want to charge this card?')
     def action_charge(self, ids):
@@ -86,6 +92,7 @@ def init_app(app):
     merchant_admin = Admin(app,
                            url='/merchant_admin',
                            name='Merchant Portal',
-                           template_mode='bootstrap3')
+                           base_template='merchant/layout.html',
+                           template_mode='bootstrap2')
     merchant_admin.add_view(PaymentAdmin(Payment, db.session, endpoint='payments'))
     return app
