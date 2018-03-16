@@ -3,7 +3,7 @@ background-color:#0e1521;
 }*/
 
 h1 {
-  font-family: Arial,sans-serif
+  font-family: Arial,sans-serif;
   font-size:80px;
   color:#E8E8E8;
 }
@@ -13,7 +13,7 @@ h1 {
 }
 
 .logo {
-  margin-top: 0px;
+  margin-top: 0;
   padding-top: 25px;
   background-color:#fff;
 }

@@ -9,12 +9,14 @@ setup(
     author_email='joe.viveiros@verygood.systems',
     version=version,
     description='VGS Demo',
-    scripts=['bin/run.py'],
     license='Other/Proprietary License',
     include_package_data=True,
-    packages=['website_forms'],
+    packages=['.'],
     install_requires=[
-        'flask',
-        'requests',
+        "gunicorn==19.7.1",
+        "requests==2.18.4",
+        "Flask==0.12.2",
+        "Flask-Admin==1.5.1",
+        "Flask-SQLAlchemy==2.3.2",
    ],
 )

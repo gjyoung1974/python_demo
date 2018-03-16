@@ -13,9 +13,9 @@
                     {% endfor %}
                   </ul>
                 </div>
-                  <form action="/revealed_data" method="post">
-                    <input type="hidden" name ="data" value="{{data}}">
-                    <button class = "btn btn-lg btn-primary" type="submit">Reveal</button>
+                  <form action="/merchant_admin" method="get">
+                    <input type="hidden" name="url" value="{{data['url']}}">
+                    <button class = "btn btn-lg btn-primary" type="submit">Visit Merchant Portal</button>
                   </form>
                 </div>
             </div>
