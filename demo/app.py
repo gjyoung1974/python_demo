@@ -67,7 +67,7 @@ def main(pa):
         app.config['VGS_PROCESSOR_ROOT_URL'] = pa.processor_root_uri
 
     proxy_uri = None
-    for k in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY',):
+    for k in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY'):
         if k in os.environ:
             proxy_uri = os.environ[k]
             break
