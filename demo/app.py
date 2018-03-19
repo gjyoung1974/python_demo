@@ -33,12 +33,13 @@ def create_parser():
                         default='0.0.0.0', help="sets the server host")
 
     parser.add_argument('--port', dest='server_port', action='store', type=int,
-                        default=8080, help="sets the server port")
+                        default=int(os.environ.get('PORT', 8080)), help="sets the server port")
 
     parser.add_argument('--debug', dest='server_debug', action='store_true',
                         default=False, help="turns on debug mode")
 
     parser.add_argument('--processor-root-uri', dest='processor_root_uri',
+                        default=os.environ.get("VGS_PROCESSOR_ROOT_URL"),
                         help="sets the processor uri (http(s?)://{HOST}(:{PORT})?")
 
     parser.add_argument('--vgs-proxy-uri', dest='vgs_proxy_uri',
@@ -58,7 +59,7 @@ def main(pa):
     with app.app_context():
         persistence.init_db(drop=pa.init_db)
 
-    pr = ('http','{0}:{1}'.format(pa.server_host, pa.server_port), '',
+    pr = ('https','{0}:{1}'.format(pa.server_host, pa.server_port), '',
           None, None)
 
     app.config['VGS_PROCESSOR_ROOT_URL'] = urlunsplit(pr)
@@ -66,7 +67,7 @@ def main(pa):
         app.config['VGS_PROCESSOR_ROOT_URL'] = pa.processor_root_uri
 
     proxy_uri = None
-    for k in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY'):
+    for k in ('http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY',):
         if k in os.environ:
             proxy_uri = os.environ[k]
             break
@@ -87,4 +88,3 @@ def main(pa):
 if __name__ == "__main__":
     cli_parser = create_parser()
     main(cli_parser.parse_args())
-
