@@ -21,10 +21,13 @@ While in the same directory, then:
 
 ### Develop
 
+Add all relevant ports exposed in the docker file you need forward to localhost.
+
+3000 3001 8080 5000 
 ```bash
 docker run -it \
-   -p 3000:3000 -p 3001:3001 -p 8000:8000 \
-   --rm --name python_demo -v $(pwd):/tmp/app/src \
+   -p 8080:8080 \
+   --rm --name python_demo \
    python_demo
 ```
 
