@@ -24,7 +24,7 @@ While in the same directory, then:
 ```bash
 docker run -it \
    -p 3000:3000 -p 3001:3001 -p 8000:8000 \
-   --rm --name python_demo -v $(pwd):/tmp/app/src \
+   --rm --name python_demo -v $(pwd):/opt/app/src \
    python_demo
 ```
 
