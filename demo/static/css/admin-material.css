@@ -2,10 +2,12 @@
 .container {
     padding-left: 0;
     padding-right: 0;
-}
+}*/
 .container .main-page {
     margin-top: 5em;
+    padding-top: 30px;
     }
+/*
 !* These  menu styles are modified from the original, which can be found *!
 !* at http://fezvrasta.github.io/bootstrap-material-design/index.css *!
 .menu {
