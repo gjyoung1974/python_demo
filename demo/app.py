@@ -23,6 +23,18 @@ processor.init_app(app)
 payment.init_app(app)
 
 
+DEFAULT_PORT = 8080
+
+def _find_first(dikt, *args):
+    """finds the first non-None value in a dictionary from a list of keys"""
+    # listen up kids, you might learn something:
+    # 1) get all the values from the dikt
+    # 2) filter all None values (ones that don't exist)
+    filtered = filter(None, map(dikt.get, args))
+    # 3) return first value or None
+    return next(filtered, None)
+
+
 def create_parser():
     parser = argparse.ArgumentParser(description="VGS Demo", prog="pydemo")
 
@@ -33,16 +45,19 @@ def create_parser():
                         default='0.0.0.0', help="sets the server host")
 
     parser.add_argument('--port', dest='server_port', action='store', type=int,
-                        default=int(os.environ.get('PORT', 8080)), help="sets the server port")
+                        default=int(os.environ.get('PORT', DEFAULT_PORT)), help="sets the server port")
 
     parser.add_argument('--debug', dest='server_debug', action='store_true',
                         default=False, help="turns on debug mode")
 
     parser.add_argument('--processor-root-uri', dest='processor_root_uri',
-                        default=os.environ.get("VGS_PROCESSOR_ROOT_URL"),
+                        default=_find_first(os.environ,
+                                            'VGS_PROCESSOR_ROOT_URI',
+                                            'VGS_PROCESSOR_ROOT_URL',),
                         help="sets the processor uri (http(s?)://{HOST}(:{PORT})?")
 
     parser.add_argument('--vgs-proxy-uri', dest='vgs_proxy_uri',
+                        default=os.environ.get('VGS_PROXY_URI'),
                         help="configures the VGS proxy uri")
 
     return parser
@@ -59,7 +74,7 @@ def main(pa):
     with app.app_context():
         persistence.init_db(drop=pa.init_db)
 
-    pr = ('https','{0}:{1}'.format(pa.server_host, pa.server_port), '',
+    pr = ('http','{0}:{1}'.format(pa.server_host, pa.server_port), '',
           None, None)
 
     app.config['VGS_PROCESSOR_ROOT_URL'] = urlunsplit(pr)
