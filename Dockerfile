@@ -35,7 +35,9 @@ ADD package.json /opt/app
 RUN cd /opt/app && npm install
 
 WORKDIR /opt/app/src
-VOLUME /opt/app/src
+ADD  . /opt/app/src
 
 # this is for virtual host purposes
 EXPOSE 3000 3001 8080 5000
+CMD ["python", "demo/app.py"]
+
