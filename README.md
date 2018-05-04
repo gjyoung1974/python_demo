@@ -34,7 +34,7 @@ We are going to use [Docker](https://docker.com) to run the app.
 ### Build
 
 ```bash
-docker build . -t python_demo 
+docker build . -t python_demo
 ```
 
 ### Run
@@ -108,6 +108,29 @@ docker run -it \
    python_demo
 ```
 
+## Set up proxy rules
+Some quick tips on how to set up VGS proxies for use with this application.
+
+### Reverse Proxy
+(Reference: https://www.verygoodsecurity.com/docs/reverse-proxy).
+
+* Use reverse proxy URL to access Order Service, e.g. `https://tntywefqyrb.SANDBOX.verygoodproxy.com`
+* Set upstream to ngrok address, e.g. `https://e907262d.ngrok.io`
+* Filter condition should be PathInfo equals `/payment`
+* Operation is to **REDACT** form fields:
+    - `card-number`
+    - `card-security-code`
+
+### Forward Proxy
+(Reference: https://www.verygoodsecurity.com/docs/forward-proxy).
+
+* Set `HTTPS_PROXY` to forward proxy URL
+* Set `VGS_PROCESSOR_ROOT_URL` to something like this: `https://e907262d.ngrok.io/charge`
+* Set upstream to ngrok address, just like with the reverse proxy
+* Filter condition should be PathInfo equals `/charge`
+* Operation is to **REVEAL** JSON fields:
+    - `$.card`
+    - `$.card_security_code`
 
 ## Used Technologies/Tools:
 
