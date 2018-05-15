@@ -31,7 +31,7 @@ def create():
     db.session.commit()
     json_data = json.dumps(dic)
     print(json_data)
-    return render_template('show_redacted.html', data = dic, url=dic['url'])
+    return render_template('show_redacted.html', data=dic, url=dic['url'])
 
 
 class Payment(db.Model):
@@ -82,9 +82,10 @@ class PaymentAdmin(CustomView):
                 count += 1
             flash('{count} cards were charged successfully. '.format(count=count))
         except Exception as ex:
-            print(''.join(traceback.format_exception(None,ex, ex.__traceback__)),
+            print(''.join(traceback.format_exception(None, ex, ex.__traceback__)),
                   file=sys.stderr, flush=True)
-            flash('Failed to approve users. {error}'.format(error=ex), category='error')
+            flash('Failed to approve users. {error}'.format(
+                error=ex), category='error')
 
 
 def init_app(app):
@@ -94,5 +95,6 @@ def init_app(app):
                            name='Merchant Portal',
                            base_template='merchant/layout.html',
                            template_mode='bootstrap2')
-    merchant_admin.add_view(PaymentAdmin(Payment, db.session, endpoint='payments'))
+    merchant_admin.add_view(PaymentAdmin(
+        Payment, db.session, endpoint='payments'))
     return app

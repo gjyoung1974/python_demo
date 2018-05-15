@@ -6,7 +6,7 @@
 #    Build FAST (rebuild) image (cache; >280MB, build time ~360s, rebuild time ~80s):
 #    docker build -t pydemo .
 #
-#    Clean (remove intermidiet images):
+#    Clean (remove intermediate images):
 #    docker rmi -f $(docker images -f "dangling=true" -q)
 #
 #    Run image (on localhost:8080):

@@ -18,7 +18,7 @@ bp = Blueprint('processor', __name__)
 def create_charge():
     """Returns POST Data."""
     extracted = h.get_dict(
-            'url', 'args', 'form', 'data', 'origin', 'headers', 'files', 'json')
+        'url', 'args', 'form', 'data', 'origin', 'headers', 'files', 'json')
     charge_entry = Charge.from_dict(extracted['json'])
     db.session.add(charge_entry)
     db.session.commit()
@@ -37,7 +37,7 @@ def charge(payload):
                  PROXY_PASSWORD=current_app.config['VGS_PROXY_PASSWORD'],
                  PROXY_URL=current_app.config['VGS_PROXY_URL'],
                  PROXY_PORT=current_app.config['VGS_PROXY_PORT']
-                 ),
+             ),
              '', None, None))
     r = requests.post(
         url,
@@ -45,7 +45,7 @@ def charge(payload):
         headers={"Content-type": "application/json"},
         proxies=proxies,
         verify='demo/static/cert.pem'
-        )
+    )
     return r
 
 
@@ -81,5 +81,6 @@ def init_app(app):
                             name='Processor Portal',
                             base_template='processor/admin/base.html',
                             template_mode='bootstrap3')
-    processor_admin.add_view(ChargeView(Charge, db.session, endpoint='charges'))
+    processor_admin.add_view(ChargeView(
+        Charge, db.session, endpoint='charges'))
     return app
