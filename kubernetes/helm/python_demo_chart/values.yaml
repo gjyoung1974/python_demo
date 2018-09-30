@@ -14,7 +14,7 @@ pythondemo:
 service:
   dns: "pythondemo.example.com"
   port: 80
-  proto: 
+  proto: "tcp"
 
 image:
   pullPolicy: IfNotPresent
